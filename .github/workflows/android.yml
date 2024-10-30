@@ -1,0 +1,31 @@
+name: Build APK
+
+on:
+  push:
+    branches:
+      - main  # 或其他你希望触发构建的分支
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: '11'  # 根据项目需求选择合适的 Java 版本
+
+      - name: Grant execute permission
+        run: chmod +x gradlew
+
+      - name: Build APK
+        run: ./gradlew assembleDebug  # 或其他构建任务
+        
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-app-debug
+          path: app/build/outputs/apk/debug/app-debug.apk  # 根据实际路径修改
