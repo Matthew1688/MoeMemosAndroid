@@ -3,7 +3,7 @@ name: Build APK
 on:
   push:
     branches:
-      - main  # 或其他你希望触发构建的分支
+      - main  # 或者你的默认分支
 
 jobs:
   build:
@@ -14,18 +14,19 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
           java-version: '11'  # 根据项目需求选择合适的 Java 版本
+          distribution: 'temurin'  # 推荐使用 Adoptium 提供的 JDK
 
       - name: Grant execute permission
         run: chmod +x gradlew
 
       - name: Build APK
-        run: ./gradlew assembleDebug  # 或其他构建任务
-        
+        run: ./gradlew assembleDebug  # 或者其他构建任务
+
       - name: Upload APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: my-app-debug
           path: app/build/outputs/apk/debug/app-debug.apk  # 根据实际路径修改
